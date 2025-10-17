@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE nvidia_smi_log SYSTEM "nvsmi_device_v8.dtd">
+<nvidia_smi_log>
+  <timestamp>Mon Mar 13 14:43:18 2017</timestamp>
+  <driver_version>367.57</driver_version>
+  <attached_gpus>1</attached_gpus>
+
+  <gpu id="0000:00:03.0">
+    <product_name>GRID K520</product_name>
+
+    <pci>
+      <pci_bus_id>0000:00:03.0</pci_bus_id>
+      …
+    </pci>
+
+    <fb_memory_usage>
+      <total>4036 MiB</total>
+      <used>0 MiB</used>
+      <free>4036 MiB</free>
+    </fb_memory_usage>
+
+    <utilization>
+      <gpu_util>0 %</gpu_util>
+      <memory_util>0 %</memory_util>
+      <encoder_util>0 %</encoder_util>
+      <decoder_util>0 %</decoder_util>
+    </utilization>
+
+    <temperature>
+      <gpu_temp>36 C</gpu_temp>
+      <gpu_temp_max_threshold>97 C</gpu_temp_max_threshold>
+    </temperature>
+
+    <power_readings>
+      <power_draw>17.90 W</power_draw>
+      <power_limit>125.00 W</power_limit>
+    </power_readings>
+
+    … <!-- clocks, ECC, processes, etc. -->
+  </gpu>
+</nvidia_smi_log>
