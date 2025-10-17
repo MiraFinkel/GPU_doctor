@@ -1,4 +1,4 @@
-from collector import db
+from gpu_doctor.collector import db
 
 sample = {
     "ts": "2025-10-14T08:00:00Z",

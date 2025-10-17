@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  gpu_doctor:
+    image: yourname/gpu_doctor:0.1.0         # build from repo root
+    command: python -m collector.poller
+    restart: unless-stopped
+    environment:
+      GPU_DOC_POLL_SEC: 30
+      GPU_DOC_KEEP_DAYS: 7
+    volumes:
+      - ./data:/app/data                       # SQLite file lives here
+      - /var/run/nvidia-persistenced/socket:/var/run/nvidia-persistenced/socket:ro
+      - /usr/bin/nvidia-smi:/usr/bin/nvidia-smi:ro
+      - /var/run/dcgm:/var/run/dcgm:ro        # optional for ECC/power
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]             # requires NVIDIA Container Runtime

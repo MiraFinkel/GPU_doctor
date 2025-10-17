@@ -1,0 +1,22 @@
+[Unit]
+Description=GPU Doctor telemetry collector
+After=multi-user.target nvidia-persistenced.service
+
+[Service]
+Type=simple
+Environment=GPU_DOC_POLL_SEC=30
+Environment=GPU_DOC_KEEP_DAYS=7
+WorkingDirectory=/opt/gpu_doctor                    # adjust
+ExecStart=/usr/bin/python3 -m collector.poller
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+# Access to nvidia-smi, persistenced socket, and DCGM
+BindReadOnlyPaths=/var/run/nvidia-persistenced
+BindReadOnlyPaths=/usr/bin/nvidia-smi
+BindReadOnlyPaths=/var/run/dcgm                         # optional
+
+[Install]
+WantedBy=multi-user.target
