@@ -68,7 +68,6 @@ def _llm_chat(prompt: str) -> str:
             messages = [{"role": "system", "content": SYSTEM},
                         {"role": "user", "content": prompt}],
             max_completion_tokens = 512,  # ← new param
-            temperature = 0.2,
         )
         return resp.choices[0].message.content
     raise ValueError("Unsupported MODEL")
