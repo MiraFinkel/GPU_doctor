@@ -56,14 +56,19 @@ def _retrieve_ctx(q: str, run_id: str | None) -> List[str]:
     return retriever.search(q, k=K)            # vector similarity
 
 def _llm_chat(prompt: str) -> str:
+    if MODEL == "dummy": # quick offline answer
+        return ('{ "answer": "Dummy model - no LLM call.",'
+                 '  "recommended_gpu_mem_mb": null,'
+                 '  "recommended_cpu_cores": null,'
+                 '  "flagged_anomalies": [] }')
     if MODEL.startswith("openai:"):
         model = MODEL.split(":", 1)[1]
         resp = openai.chat.completions.create(
-            model=model,
-            messages=[{"role": "system", "content": SYSTEM},
-                      {"role": "user", "content": prompt}],
-            max_tokens=512,
-            temperature=0.2,
+            model = model,
+            messages = [{"role": "system", "content": SYSTEM},
+                        {"role": "user", "content": prompt}],
+            max_completion_tokens = 512,  # ← new param
+            temperature = 0.2,
         )
         return resp.choices[0].message.content
     raise ValueError("Unsupported MODEL")
