@@ -38,12 +38,13 @@ def migrate_pgvector() -> None:
         conn.commit()
 
 # # ---- Option B  FAISS -------------------------------------------------
-# import faiss, pickle
-# def build_faiss() -> None:
-#     with sqlite3.connect(_DB) as conn:
-#         rows = conn.execute("SELECT id, * FROM gpu_log").fetchall()
-#     vectors = np.stack([encode(to_text(r)) for r in rows])
-#     idx = faiss.IndexFlatIP(vectors.shape[1])
-#     idx.add(vectors.astype("float32"))
-#     faiss.write_index(idx, str(_FAISS_IDX))
-#     pickle.dump([r["id"] for r in rows], open(_FAISS_IDX.with_suffix(".ids"), "wb"))
+import faiss, pickle
+def build_faiss() -> None:
+    with sqlite3.connect(_DB) as conn:
+        conn.row_factory = sqlite3.Row  # <-- add this line
+        rows = conn.execute("SELECT id, * FROM gpu_log").fetchall()
+    vectors = np.stack([encode(to_text(r)) for r in rows])
+    idx = faiss.IndexFlatIP(vectors.shape[1])
+    idx.add(vectors.astype("float32"))
+    faiss.write_index(idx, str(_FAISS_IDX))
+    pickle.dump([r["id"] for r in rows], open(_FAISS_IDX.with_suffix(".ids"), "wb"))

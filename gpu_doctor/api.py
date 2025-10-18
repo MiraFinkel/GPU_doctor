@@ -6,8 +6,9 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 
-from collector import retriever
 import openai
+
+from gpu_doctor.collector import retriever
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 MODEL = os.getenv("GPU_DOC_MODEL", "openai:o3")
