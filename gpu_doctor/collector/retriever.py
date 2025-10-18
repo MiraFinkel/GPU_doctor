@@ -37,6 +37,7 @@ def search(query: str, k: int = 5) -> List[str]:
     if _USE_FAISS:
         D, I = _IDX.search(np.expand_dims(vec.astype("float32"), 0), k)
         with sqlite3.connect(_DB) as c:
+            c.row_factory = sqlite3.Row
             return [
                 to_text(c.execute("SELECT * FROM gpu_log WHERE id=?", (_IDS[i],)).fetchone())
                 for i in I[0]
@@ -44,6 +45,7 @@ def search(query: str, k: int = 5) -> List[str]:
 
     # pgvector path
     with sqlite3.connect(_DB) as c:
+        c.row_factory = sqlite3.Row
         pgvector.load(c)
         rows = c.execute(
             "SELECT *, embedding <-> json(?) AS dist "
